@@ -1,0 +1,11 @@
+# Local runtime and patient-submitted demo data
+/data/
+.env
+.env.*
+!.env.example
+
+# Python environments and bytecode
+venv/
+.venv/
+__pycache__/
+*.py[cod]

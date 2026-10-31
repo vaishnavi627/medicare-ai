@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en-IN" data-bs-theme="dark">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Admin Dashboard · MediCare AI Clinic</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link href="/static/css/style.css" rel="stylesheet">
+  </head>
+  <body class="bg-clinical-canvas">
+    <header class="navbar navbar-dark navbar-clinical sticky-top px-3 px-lg-5 py-3">
+      <div class="container-fluid px-0">
+        <a class="navbar-brand font-display fw-bold" href="/">MediCare <span class="text-info">AI</span> · Admin</a>
+        <div class="d-flex align-items-center gap-3">
+          <span id="adminIdentity" class="text-secondary small"></span>
+          <button type="button" class="btn btn-outline-clinical btn-sm" id="adminLogoutBtn">
+            <i class="bi bi-box-arrow-right me-1"></i> Log out
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main class="py-5 px-3 px-lg-5">
+      <div class="container-fluid px-0 max-w-7xl">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-end gap-3 mb-4">
+          <div>
+            <div class="font-mono-telemetry text-info text-uppercase fw-semibold small">Operations Console</div>
+            <h1 class="font-display fw-bold fs-2 text-white mb-1">Today’s Appointments</h1>
+            <p class="text-secondary small mb-0">Manage appointment status and download filtered records.</p>
+          </div>
+          <button type="button" class="btn btn-cyan" id="exportAppointmentsBtn">
+            <i class="bi bi-download me-1"></i> Export CSV
+          </button>
+        </div>
+
+        <section class="clinical-card p-3 p-md-4">
+          <div class="row g-3 align-items-end mb-4">
+            <div class="col-md-4">
+              <label class="form-label text-secondary small" for="adminDateFilter">Date</label>
+              <input type="date" id="adminDateFilter" class="form-control form-control-clinical">
+            </div>
+            <div class="col-md-4">
+              <label class="form-label text-secondary small" for="adminDoctorFilter">Doctor</label>
+              <select id="adminDoctorFilter" class="form-select form-select-clinical">
+                <option value="">All doctors</option>
+              </select>
+            </div>
+            <div class="col-md-4">
+              <label class="form-label text-secondary small" for="adminStatusFilter">Status</label>
+              <select id="adminStatusFilter" class="form-select form-select-clinical">
+                <option value="">All statuses</option>
+                <option value="demo_confirmed">Confirmed</option>
+                <option value="completed">Completed</option>
+                <option value="cancelled">Cancelled</option>
+              </select>
+            </div>
+          </div>
+          <div id="adminAppointmentMessage" class="small text-secondary mb-3" aria-live="polite"></div>
+          <div class="table-responsive">
+            <table class="table table-dark align-middle mb-0">
+              <thead><tr><th>Time</th><th>Patient</th><th>Doctor</th><th>Specialty</th><th>Status</th><th class="text-end">Actions</th></tr></thead>
+              <tbody id="adminAppointmentRows"></tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+    </main>
+    <script src="/static/js/admin.js" defer></script>
+  </body>
+</html>

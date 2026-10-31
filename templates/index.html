@@ -1,0 +1,1231 @@
+<!doctype html>
+<html lang="en-IN" data-bs-theme="dark" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>MediCare AI Clinic</title>
+    <meta name="description" content="Demo clinic information, appointment booking, and non-diagnostic symptom guidance." />
+    <meta property="og:title" content="MediCare AI Clinic" />
+    <meta property="og:locale" content="en_IN" />
+    <meta property="og:description" content="Demo clinic information, appointment booking, and non-diagnostic symptom guidance." />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
+    <link href="/static/css/style.css" rel="stylesheet">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Geist+Mono:wght@400;500;600;700&family=Geist:wght@300;400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  </head>
+  <body class="bg-clinical-canvas">
+
+    <!-- Toast Notification Container -->
+    <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index: 1090;">
+      <div id="liveToast" class="toast align-items-center text-bg-dark border-info shadow-lg" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="d-flex">
+          <div class="toast-body font-mono-telemetry small" id="toastMessage">
+            Action completed.
+          </div>
+          <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Navigation Header -->
+    <header class="navbar navbar-expand-md navbar-dark navbar-clinical sticky-top px-3 px-lg-5 py-3">
+      <div class="container-fluid px-0">
+        <!-- Brand -->
+        <a class="navbar-brand d-flex items-center gap-2 m-0 text-decoration-none" href="#home">
+          <div class="d-flex align-items-center justify-content-center rounded-2 bg-info text-dark shadow-sm" style="width: 36px; height: 36px;">
+            <i class="bi bi-activity fs-5 fw-bold"></i>
+          </div>
+          <div>
+            <div class="d-flex align-items-center gap-1 font-display fw-bold fs-5 text-white lh-1">
+              <span>MediCare</span>
+              <span class="text-info">AI</span>
+            </div>
+            <div class="font-mono-telemetry text-info-emphasis text-uppercase fw-semibold" style="font-size: 9px; letter-spacing: 0.12em;">
+              Clinical Precision Unit
+            </div>
+          </div>
+        </a>
+
+        <!-- Mobile Toggle -->
+        <button class="navbar-toggler border-0 shadow-none" type="button" data-bs-toggle="collapse" data-bs-target="#navContent" aria-controls="navContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <!-- Nav Items -->
+        <div class="collapse navbar-collapse justify-content-center mt-3 mt-md-0" id="navContent">
+          <ul class="navbar-nav gap-1">
+            <li class="nav-item">
+              <a class="nav-link nav-link-clinical active" href="#home" id="navHome">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link nav-link-clinical" href="#services" id="navServices">Services</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link nav-link-clinical" href="#doctors" id="navDoctors">Doctors</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link nav-link-clinical" href="#clinicChatToggle" id="navTriage">Clinic Chatbot</a>
+            </li>
+            <li class="nav-item d-none" id="adminNavItem">
+              <a class="nav-link nav-link-clinical" href="#adminDashboard">Admin Dashboard</a>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Right Action Button & Profile -->
+        <div class="d-flex align-items-center gap-2">
+          <a href="#booking" class="btn btn-cyan d-none d-sm-inline-block">
+            Book Appointment
+          </a>
+          <button class="btn btn-outline-clinical p-2 d-flex align-items-center justify-content-center" data-bs-toggle="modal" data-bs-target="#profileModal" title="Patient Telemetry Node">
+            <i class="bi bi-person fs-6"></i>
+          </button>
+          <button class="btn btn-outline-clinical btn-sm" data-bs-toggle="modal" data-bs-target="#adminLoginModal">
+            Admin Login
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+      <!-- Hero Section -->
+      <section id="home" class="py-5 px-3 px-lg-5">
+        <div class="container-fluid px-0 max-w-7xl">
+          <div class="row align-items-center g-5">
+            <!-- Hero Left Copy -->
+            <div class="col-lg-7">
+              <!-- Active Node Kicker -->
+              <div class="d-flex align-items-center gap-2 mb-3">
+                <span class="rounded-circle bg-success d-inline-block" style="width: 8px; height: 8px; box-shadow: 0 0 8px #10b981;"></span>
+                <span class="font-mono-telemetry text-success text-uppercase fw-semibold" style="font-size: 11px; letter-spacing: 0.08em;">
+                  Demo Clinic Online • Appointment API Active
+                </span>
+              </div>
+
+              <!-- Main Heading -->
+              <div class="font-mono-telemetry text-info fw-semibold text-uppercase mb-2" style="font-size: 12px; letter-spacing: 0.15em;">
+                Clinical Precision AI Platform
+              </div>
+              <h1 class="font-display fw-bold display-4 text-white mb-3 lh-1">
+                Your Health, <br />
+                <span class="text-info" style="text-shadow: 0 0 25px rgba(6,182,212,0.4);">Our Priority.</span>
+              </h1>
+
+              <p class="text-light-emphasis lead fs-6 mb-4 col-xl-10">
+                Explore clinic services, request an appointment, and use non-diagnostic symptom guidance. This demonstration is not a substitute for care from a qualified medical professional.
+              </p>
+
+              <!-- Actions -->
+              <div class="d-flex flex-wrap align-items-center gap-3 mb-5">
+                <a href="#booking" class="btn btn-cyan d-flex align-items-center gap-2 py-3 px-4">
+                  <span>Book An Appointment</span>
+                  <i class="bi bi-calendar-check"></i>
+                </a>
+                <a href="#clinicChatToggle" class="btn btn-outline-clinical d-flex align-items-center gap-2 py-3 px-4">
+                  <i class="bi bi-heart-pulse text-info"></i>
+                  <span>Try Clinic Chatbot</span>
+                </a>
+              </div>
+
+              <!-- Stats Strip -->
+              <div class="row g-3 pt-4 border-top border-secondary-subtle col-xl-10">
+                <div class="col-4">
+                  <div class="p-3 rounded-3" style="background-color: var(--med-surface); border: 1px solid var(--med-border-subtle);">
+                    <div class="d-flex align-items-center gap-1 font-display fw-bold fs-4 text-white">
+                      <i class="bi bi-check-circle-fill text-info fs-6"></i>
+                      <span>4.9</span>
+                      <span class="fs-6 fw-normal text-secondary">/5</span>
+                    </div>
+                    <div class="font-mono-telemetry text-secondary text-uppercase mt-1" style="font-size: 10px; letter-spacing: 0.08em;">
+                      Patient Rating
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-4">
+                  <div class="p-3 rounded-3" style="background-color: var(--med-surface); border: 1px solid var(--med-border-subtle);">
+                    <div class="d-flex align-items-center gap-1 font-display fw-bold fs-4 text-white">
+                      <i class="bi bi-people-fill text-info fs-6"></i>
+                      <span>15k+</span>
+                    </div>
+                    <div class="font-mono-telemetry text-secondary text-uppercase mt-1" style="font-size: 10px; letter-spacing: 0.08em;">
+                      Treated Monthly
+                    </div>
+                  </div>
+                </div>
+
+                <div class="col-4">
+                  <div class="p-3 rounded-3" style="background-color: var(--med-surface); border: 1px solid var(--med-border-subtle);">
+                    <div class="d-flex align-items-center gap-1 font-display fw-bold fs-4 text-white">
+                      <i class="bi bi-clock-fill text-info fs-6"></i>
+                      <span>&lt;15m</span>
+                    </div>
+                    <div class="font-mono-telemetry text-secondary text-uppercase mt-1" style="font-size: 10px; letter-spacing: 0.08em;">
+                      Median Wait Time
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Hero Right Live Telemetry Card -->
+            <div class="col-lg-5">
+              <div class="clinical-card p-4">
+                <!-- Header -->
+                <div class="d-flex align-items-center justify-content-between pb-3 border-bottom border-secondary-subtle">
+                  <div class="d-flex align-items-center gap-2">
+                    <span class="rounded-circle bg-success d-inline-block" style="width: 8px; height: 8px; box-shadow: 0 0 8px #10b981;"></span>
+                    <span class="font-mono-telemetry text-light text-uppercase fw-semibold" style="font-size: 11px; letter-spacing: 0.08em;">
+                      Live Telemetry • Queue Stat
+                    </span>
+                  </div>
+                  <span class="badge-tag badge-tag-cyan">SYNC: ACTIVE</span>
+                </div>
+
+                <!-- Featured Clinician -->
+                <div class="my-3 p-3 rounded-3 d-flex align-items-center gap-3" style="background-color: var(--med-surface); border: 1px solid var(--med-border-subtle);">
+                  <img src="/static/images/doctors/doctor-8461303_1280.jpg" alt="Dr. Sarah Chen" class="rounded object-fit-cover border border-info" style="width: 48px; height: 48px;">
+                  <div class="flex-grow-1 min-w-0">
+                    <div class="d-flex align-items-center justify-content-between gap-1">
+                      <div class="font-display fw-bold text-white text-truncate fs-6">Dr. Sarah Chen</div>
+                      <span class="badge-tag badge-tag-emerald">Available</span>
+                    </div>
+                    <div class="text-secondary small text-truncate">Chief Cardiologist • Bio-Vascular Lead</div>
+                    <div class="font-mono-telemetry text-info small mt-1">
+                      Slot: Today 14:30 IST <span class="text-secondary">•</span> Bengaluru
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Intake Frequency with SVG Waveform -->
+                <div class="p-3 rounded-3 mb-3" style="background-color: var(--med-surface); border: 1px solid var(--med-border-subtle);">
+                  <div class="d-flex justify-content-between font-mono-telemetry small mb-2">
+                    <span class="text-secondary text-uppercase" style="font-size: 10px; letter-spacing: 0.08em;">Clinic Intake Frequency</span>
+                    <span class="text-info fw-semibold">98.4% On Schedule</span>
+                  </div>
+                  <div class="w-100" style="height: 54px;">
+                    <svg class="w-100 h-100" viewBox="0 0 300 60" preserveAspectRatio="none">
+                      <defs>
+                        <linearGradient id="waveGradBootstrap" x1="0" y1="0" x2="0" y2="1">
+                          <stop offset="0%" stop-color="#06b6d4" stop-opacity="0.3" />
+                          <stop offset="100%" stop-color="#06b6d4" stop-opacity="0.0" />
+                        </linearGradient>
+                      </defs>
+                      <polygon points="0,48 20,47 45,45 70,49 90,32 110,42 135,24 165,36 190,29 215,44 240,35 265,42 285,38 300,42 300,60 0,60" fill="url(#waveGradBootstrap)" />
+                      <polyline points="0,48 20,47 45,45 70,49 90,32 110,42 135,24 165,36 190,29 215,44 240,35 265,42 285,38 300,42" fill="none" stroke="#06b6d4" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                  </div>
+                </div>
+
+                <!-- Card Footer & Direct Dispatch -->
+                <div class="d-flex align-items-center justify-content-between pt-3 border-top border-secondary-subtle">
+                  <div>
+                    <div class="font-mono-telemetry text-secondary text-uppercase" style="font-size: 10px; letter-spacing: 0.08em;">
+                      Next Rapid Consult
+                    </div>
+                    <div class="font-display fw-bold text-white fs-5">
+                      3 Slots Left
+                    </div>
+                  </div>
+                  <button id="heroDirectDispatchBtn" class="btn btn-cyan btn-sm">
+                    Direct Dispatch
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Department Modules: Precision Clinical Services -->
+      <section id="services" class="py-5 px-3 px-lg-5 border-top border-secondary-subtle">
+        <div class="container-fluid px-0 max-w-7xl">
+          <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-end gap-3 mb-5">
+            <div>
+              <div class="d-flex align-items-center gap-2 mb-2">
+                <span class="rounded-circle bg-info d-inline-block" style="width: 8px; height: 8px;"></span>
+                <span class="font-mono-telemetry text-info text-uppercase fw-semibold" style="font-size: 11px; letter-spacing: 0.08em;">
+                  Department Modules
+                </span>
+              </div>
+              <h2 class="font-display fw-bold fs-2 text-white m-0">
+                Precision Clinical Services
+              </h2>
+            </div>
+            <p class="text-secondary small col-md-5 mb-0">
+              Clinic services and indicative pricing for Bengaluru. Contact your chosen clinic to confirm availability and fees.
+            </p>
+          </div>
+
+          <!-- Services Grid -->
+          <div class="row g-4">
+            <!-- 1. General Consultation -->
+            <div class="col-md-6 col-lg-4">
+              <div class="service-card">
+                <div>
+                  <div class="d-flex align-items-center justify-content-center rounded-2 bg-dark border border-info mb-3" style="width: 42px; height: 42px;">
+                    <i class="bi bi-heart-pulse-fill text-info fs-5"></i>
+                  </div>
+                  <h3 class="font-display fw-bold fs-5 text-white mb-2">General Consultation</h3>
+                  <p class="text-secondary small mb-4">
+                    Comprehensive clinical evaluation, acute illness intervention, prescription calibration, and vital bio-sign baseline mapping.
+                  </p>
+                </div>
+                <div class="d-flex align-items-end justify-content-between pt-3 border-top border-secondary-subtle">
+                  <div>
+                    <div class="font-mono-telemetry text-secondary text-uppercase" style="font-size: 10px;">Fee Baseline</div>
+                    <div class="font-mono-telemetry text-info fw-bold small">₹650 Consultation</div>
+                  </div>
+                  <button class="btn btn-link text-info text-decoration-none fw-semibold p-0 small service-book-btn" data-specialty="General Consultation">
+                    Book Slot <i class="bi bi-arrow-right"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- 2. Dental & Oral Care -->
+            <div class="col-md-6 col-lg-4">
+              <div class="service-card">
+                <div>
+                  <div class="d-flex align-items-center justify-content-center rounded-2 bg-dark border border-info mb-3" style="width: 42px; height: 42px;">
+                    <i class="bi bi-emoji-smile-fill text-info fs-5"></i>
+                  </div>
+                  <h3 class="font-display fw-bold fs-5 text-white mb-2">Dental & Oral Care</h3>
+                  <p class="text-secondary small mb-4">
+                    High-definition intraoral 3D rendering, non-invasive endodontics, surgical extraction, and periodontal regenerative cleanings.
+                  </p>
+                </div>
+                <div class="d-flex align-items-end justify-content-between pt-3 border-top border-secondary-subtle">
+                  <div>
+                    <div class="font-mono-telemetry text-secondary text-uppercase" style="font-size: 10px;">Fee Baseline</div>
+                    <div class="font-mono-telemetry text-info fw-bold small">₹950 Intake</div>
+                  </div>
+                  <button class="btn btn-link text-info text-decoration-none fw-semibold p-0 small service-book-btn" data-specialty="Dental & Oral Care">
+                    Book Slot <i class="bi bi-arrow-right"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- 3. Preventive Health Checkups -->
+            <div class="col-md-6 col-lg-4">
+              <div class="service-card">
+                <div>
+                  <div class="d-flex align-items-center justify-content-center rounded-2 bg-dark border border-info mb-3" style="width: 42px; height: 42px;">
+                    <i class="bi bi-shield-check text-info fs-5"></i>
+                  </div>
+                  <h3 class="font-display fw-bold fs-5 text-white mb-2">Preventive Health Checkups</h3>
+                  <p class="text-secondary small mb-4">
+                    Full-panel 120-parameter metabolic diagnostics, genomic predisposition profiling, and preventative organ load reviews.
+                  </p>
+                </div>
+                <div class="d-flex align-items-end justify-content-between pt-3 border-top border-secondary-subtle">
+                  <div>
+                    <div class="font-mono-telemetry text-secondary text-uppercase" style="font-size: 10px;">Fee Baseline</div>
+                    <div class="font-mono-telemetry text-info fw-bold small">₹1,400 Lab + Visit</div>
+                  </div>
+                  <button class="btn btn-link text-info text-decoration-none fw-semibold p-0 small service-book-btn" data-specialty="Preventive Health Checkups">
+                    Book Slot <i class="bi bi-arrow-right"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- 4. Cardiology Screening -->
+            <div class="col-md-6 col-lg-4">
+              <div class="service-card">
+                <div>
+                  <div class="d-flex align-items-center justify-content-center rounded-2 bg-dark border border-info mb-3" style="width: 42px; height: 42px;">
+                    <i class="bi bi-activity text-info fs-5"></i>
+                  </div>
+                  <h3 class="font-display fw-bold fs-5 text-white mb-2">Cardiology Screening</h3>
+                  <p class="text-secondary small mb-4">
+                    12-lead AI arrhythmia classification, doppler echocardiography, stress vector mapping, and micro-vascular hypertension checks.
+                  </p>
+                </div>
+                <div class="d-flex align-items-end justify-content-between pt-3 border-top border-secondary-subtle">
+                  <div>
+                    <div class="font-mono-telemetry text-secondary text-uppercase" style="font-size: 10px;">Fee Baseline</div>
+                    <div class="font-mono-telemetry text-info fw-bold small">₹1,800 Screening</div>
+                  </div>
+                  <button class="btn btn-link text-info text-decoration-none fw-semibold p-0 small service-book-btn" data-specialty="Cardiology Screening">
+                    Book Slot <i class="bi bi-arrow-right"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- 5. Pediatrics -->
+            <div class="col-md-6 col-lg-4">
+              <div class="service-card">
+                <div>
+                  <div class="d-flex align-items-center justify-content-center rounded-2 bg-dark border border-info mb-3" style="width: 42px; height: 42px;">
+                    <i class="bi bi-person-hearts text-info fs-5"></i>
+                  </div>
+                  <h3 class="font-display fw-bold fs-5 text-white mb-2">Pediatrics</h3>
+                  <p class="text-secondary small mb-4">
+                    Infant developmental milestone tracking, gentle pediatric immunizations, adolescent endocrine care, and pediatric triage.
+                  </p>
+                </div>
+                <div class="d-flex align-items-end justify-content-between pt-3 border-top border-secondary-subtle">
+                  <div>
+                    <div class="font-mono-telemetry text-secondary text-uppercase" style="font-size: 10px;">Fee Baseline</div>
+                    <div class="font-mono-telemetry text-info fw-bold small">₹750 Consultation</div>
+                  </div>
+                  <button class="btn btn-link text-info text-decoration-none fw-semibold p-0 small service-book-btn" data-specialty="Pediatrics">
+                    Book Slot <i class="bi bi-arrow-right"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- 6. Telehealth & AI Diagnostics -->
+            <div class="col-md-6 col-lg-4">
+              <div class="service-card">
+                <div>
+                  <div class="d-flex align-items-center justify-content-center rounded-2 bg-dark border border-info mb-3" style="width: 42px; height: 42px;">
+                    <i class="bi bi-camera-video-fill text-info fs-5"></i>
+                  </div>
+                  <h3 class="font-display fw-bold fs-5 text-white mb-2">Telehealth & AI Diagnostics</h3>
+                  <p class="text-secondary small mb-4">
+                    Secure HD multi-stream clinical video, instant biometrics upload, automated prescription routing to 4,000+ certified pharmacies.
+                  </p>
+                </div>
+                <div class="d-flex align-items-end justify-content-between pt-3 border-top border-secondary-subtle">
+                  <div>
+                    <div class="font-mono-telemetry text-secondary text-uppercase" style="font-size: 10px;">Fee Baseline</div>
+                    <div class="font-mono-telemetry text-info fw-bold small">₹450 Virtual Visit</div>
+                  </div>
+                  <button class="btn btn-link text-info text-decoration-none fw-semibold p-0 small service-book-btn" data-specialty="Telehealth & AI Diagnostics">
+                    Book Slot <i class="bi bi-arrow-right"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Attending Clinicians: Precision Medical Faculty -->
+      <section id="doctors" class="py-5 px-3 px-lg-5 border-top border-secondary-subtle">
+        <div class="container-fluid px-0 max-w-7xl">
+          <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-end gap-2 mb-5">
+            <div>
+              <div class="font-mono-telemetry text-info text-uppercase fw-semibold mb-2" style="font-size: 11px; letter-spacing: 0.08em;">
+                Attending Clinicians
+              </div>
+              <h2 class="font-display fw-bold fs-2 text-white m-0">
+                Precision Medical Faculty
+              </h2>
+            </div>
+            <div class="d-flex align-items-center gap-2">
+              <span class="rounded-circle bg-info d-inline-block" style="width: 8px; height: 8px;"></span>
+              <span class="font-mono-telemetry text-secondary small">4 Staff Specialists On Active Duty</span>
+            </div>
+          </div>
+
+          <!-- Doctor Cards Grid -->
+          <div class="row g-4">
+            <!-- Doctor 1: Dr. Sarah Chen -->
+            <div class="col-sm-6 col-lg-3">
+              <div class="doctor-card">
+                <div class="doctor-img-wrap">
+                  <img src="/static/images/doctors/doctor-8461303_1280.jpg" alt="Dr. Sarah Chen">
+                  <div class="position-absolute top-0 end-0 m-2 badge-tag bg-dark text-info border border-info d-flex align-items-center gap-1">
+                    <i class="bi bi-star-fill text-info"></i> 4.98
+                  </div>
+                </div>
+                <div class="p-3 d-flex flex-column justify-content-between flex-grow-1">
+                  <div>
+                    <span class="badge-tag badge-tag-cyan mb-2 d-inline-block">Cardiology</span>
+                    <h3 class="font-display fw-bold fs-6 text-white mb-1">Dr. Sarah Chen</h3>
+                    <div class="text-secondary small mb-3">Chief Cardiologist • 14 Yrs Exp</div>
+                  </div>
+                  <div>
+                    <div class="p-2 rounded mb-3" style="background-color: var(--med-bg-secondary); border: 1px solid var(--med-border-subtle);">
+                      <div class="font-mono-telemetry text-secondary text-uppercase" style="font-size: 9px;">Next Slot</div>
+                      <div class="font-mono-telemetry text-success fw-semibold small">Today at 14:30 IST</div>
+                    </div>
+                    <button class="btn btn-outline-clinical w-100 btn-sm doctor-book-btn" data-doctor="Dr. Sarah Chen (Chief Cardiologist)" data-specialty="Cardiology Screening" data-slot="14:30">
+                      Book Visit <i class="bi bi-chevron-right"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Doctor 2: Dr. Marcus Vance -->
+            <div class="col-sm-6 col-lg-3">
+              <div class="doctor-card">
+                <div class="doctor-img-wrap">
+                  <img src="/static/images/doctors/doctor3.jpg" alt="Dr. Marcus Vance">
+                  <div class="position-absolute top-0 end-0 m-2 badge-tag bg-dark text-info border border-info d-flex align-items-center gap-1">
+                    <i class="bi bi-star-fill text-info"></i> 4.92
+                  </div>
+                </div>
+                <div class="p-3 d-flex flex-column justify-content-between flex-grow-1">
+                  <div>
+                    <span class="badge-tag badge-tag-cyan mb-2 d-inline-block">General Med</span>
+                    <h3 class="font-display fw-bold fs-6 text-white mb-1">Dr. Marcus Vance</h3>
+                    <div class="text-secondary small mb-3">Internal Medicine Lead • 11 Yrs Exp</div>
+                  </div>
+                  <div>
+                    <div class="p-2 rounded mb-3" style="background-color: var(--med-bg-secondary); border: 1px solid var(--med-border-subtle);">
+                      <div class="font-mono-telemetry text-secondary text-uppercase" style="font-size: 9px;">Next Slot</div>
+                      <div class="font-mono-telemetry text-success fw-semibold small">Today at 15:15 IST</div>
+                    </div>
+                    <button class="btn btn-outline-clinical w-100 btn-sm doctor-book-btn" data-doctor="Dr. Marcus Vance (General Med Lead)" data-specialty="General Consultation" data-slot="15:15">
+                      Book Visit <i class="bi bi-chevron-right"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Doctor 3: Dr. Elena Rostova -->
+            <div class="col-sm-6 col-lg-3">
+              <div class="doctor-card">
+                <div class="doctor-img-wrap">
+                  <img src="/static/images/doctors/image.png" alt="Dr. Elena Rostova">
+                  <div class="position-absolute top-0 end-0 m-2 badge-tag bg-dark text-info border border-info d-flex align-items-center gap-1">
+                    <i class="bi bi-star-fill text-info"></i> 4.96
+                  </div>
+                </div>
+                <div class="p-3 d-flex flex-column justify-content-between flex-grow-1">
+                  <div>
+                    <span class="badge-tag badge-tag-cyan mb-2 d-inline-block">Pediatrics</span>
+                    <h3 class="font-display fw-bold fs-6 text-white mb-1">Dr. Elena Rostova</h3>
+                    <div class="text-secondary small mb-3">Pediatric Specialist • 9 Yrs Exp</div>
+                  </div>
+                  <div>
+                    <div class="p-2 rounded mb-3" style="background-color: var(--med-bg-secondary); border: 1px solid var(--med-border-subtle);">
+                      <div class="font-mono-telemetry text-secondary text-uppercase" style="font-size: 9px;">Next Slot</div>
+                      <div class="font-mono-telemetry text-success fw-semibold small">Tomorrow at 09:00 IST</div>
+                    </div>
+                    <button class="btn btn-outline-clinical w-100 btn-sm doctor-book-btn" data-doctor="Dr. Elena Rostova (Pediatric Specialist)" data-specialty="Pediatrics" data-slot="09:00">
+                      Book Visit <i class="bi bi-chevron-right"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Doctor 4: Dr. James Wilson -->
+            <div class="col-sm-6 col-lg-3">
+              <div class="doctor-card">
+                <div class="doctor-img-wrap">
+                  <img src="/static/images/doctors/bf0c7651ee5d65b983eed068bbbba1c8.jpg" alt="Dr. James Wilson">
+                  <div class="position-absolute top-0 end-0 m-2 badge-tag bg-dark text-info border border-info d-flex align-items-center gap-1">
+                    <i class="bi bi-star-fill text-info"></i> 4.91
+                  </div>
+                </div>
+                <div class="p-3 d-flex flex-column justify-content-between flex-grow-1">
+                  <div>
+                    <span class="badge-tag badge-tag-cyan mb-2 d-inline-block">Oral Surgery</span>
+                    <h3 class="font-display fw-bold fs-6 text-white mb-1">Dr. James Wilson</h3>
+                    <div class="text-secondary small mb-3">Dental Surgeon • 16 Yrs Exp</div>
+                  </div>
+                  <div>
+                    <div class="p-2 rounded mb-3" style="background-color: var(--med-bg-secondary); border: 1px solid var(--med-border-subtle);">
+                      <div class="font-mono-telemetry text-secondary text-uppercase" style="font-size: 9px;">Next Slot</div>
+                      <div class="font-mono-telemetry text-success fw-semibold small">Today at 16:45 IST</div>
+                    </div>
+                    <button class="btn btn-outline-clinical w-100 btn-sm doctor-book-btn" data-doctor="Dr. James Wilson (Oral Surgeon)" data-specialty="Dental & Oral Care" data-slot="16:45">
+                      Book Visit <i class="bi bi-chevron-right"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Direct Clinical Dispatch: Book Your Consultation Slot -->
+      <section id="booking" class="py-5 px-3 px-lg-5 border-top border-secondary-subtle">
+        <div class="container-fluid px-0 max-w-4xl mx-auto" style="max-width: 900px;">
+          <!-- Header -->
+          <div class="text-center mb-5">
+            <div class="font-mono-telemetry text-info text-uppercase fw-semibold mb-2" style="font-size: 11px; letter-spacing: 0.08em;">
+              Direct Clinical Dispatch
+            </div>
+            <h2 class="font-display fw-bold fs-2 text-white mb-2">
+              Book Your Consultation Slot
+            </h2>
+            <p class="text-secondary small max-w-xl mx-auto mb-0">
+              Request an appointment from the demo schedule. Bookings are stored in this application's local SQLite database; no SMS is sent.
+            </p>
+          </div>
+
+          <!-- Booking Form Card -->
+          <div class="clinical-card p-4 p-sm-5">
+            <form id="consultationBookingForm">
+              <!-- Row 1: Specialty & Doctor -->
+              <div class="row g-4 mb-4">
+                <div class="col-md-6">
+                  <label class="form-label font-mono-telemetry text-secondary text-uppercase fw-semibold" style="font-size: 11px;">
+                    Medical Specialty
+                  </label>
+                  <select id="bookingSpecialty" class="form-select form-select-clinical" required>
+                    <option value="Cardiology Screening" selected>Cardiology Screening</option>
+                    <option value="General Consultation">General Consultation</option>
+                    <option value="Dental & Oral Care">Dental & Oral Care</option>
+                    <option value="Preventive Health Checkups">Preventive Health Checkups</option>
+                    <option value="Pediatrics">Pediatrics</option>
+                    <option value="Telehealth & AI Diagnostics">Telehealth & AI Diagnostics</option>
+                  </select>
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label font-mono-telemetry text-secondary text-uppercase fw-semibold" style="font-size: 11px;">
+                    Assigned Practitioner
+                  </label>
+                  <select id="bookingDoctor" class="form-select form-select-clinical" required>
+                    <option value="Dr. Sarah Chen (Chief Cardiologist)" selected>Dr. Sarah Chen (Chief Cardiologist)</option>
+                    <option value="Dr. Marcus Vance (General Med Lead)">Dr. Marcus Vance (Internal Medicine Lead)</option>
+                    <option value="Dr. Elena Rostova (Pediatric Specialist)">Dr. Elena Rostova (Pediatric Specialist)</option>
+                    <option value="Dr. James Wilson (Oral Surgeon)">Dr. James Wilson (Dental Surgeon)</option>
+                  </select>
+                </div>
+              </div>
+
+              <!-- Row 2: Date & Available Slots -->
+              <div class="row g-4 mb-4">
+                <div class="col-md-6">
+                  <label class="form-label font-mono-telemetry text-secondary text-uppercase fw-semibold" style="font-size: 11px;">
+                    Appointment Date
+                  </label>
+                  <input type="date" id="bookingDate" class="form-control form-control-clinical" required>
+                </div>
+
+                <div class="col-md-6">
+                  <div class="d-flex justify-content-between align-items-center mb-2">
+                    <label class="form-label font-mono-telemetry text-secondary text-uppercase fw-semibold m-0" style="font-size: 11px;">
+                      Time Period & Available Slots
+                    </label>
+                    <div class="d-flex gap-1 p-1 rounded" style="background-color: var(--med-bg-secondary); border: 1px solid var(--med-border-subtle);">
+                      <button type="button" class="period-tab" data-period="morning">MORNING</button>
+                      <button type="button" class="period-tab active" data-period="afternoon">AFTERNOON</button>
+                      <button type="button" class="period-tab" data-period="evening">EVENING</button>
+                    </div>
+                  </div>
+
+                  <!-- Slot Buttons Container -->
+                  <div class="d-flex flex-wrap gap-2" id="slotsContainer">
+                    <button type="button" class="slot-btn" data-slot="13:30">13:30</button>
+                    <button type="button" class="slot-btn active" data-slot="14:30 (Recommended)">14:30 (Recommended)</button>
+                    <button type="button" class="slot-btn" data-slot="15:15">15:15</button>
+                    <button type="button" class="slot-btn" data-slot="16:00">16:00</button>
+                    <button type="button" class="slot-btn" data-slot="16:45">16:45</button>
+                  </div>
+                  <input type="hidden" id="bookingSelectedSlot" value="14:30 (Recommended)">
+                </div>
+              </div>
+
+              <!-- Row 3: Name & Phone -->
+              <div class="row g-4 mb-4">
+                <div class="col-md-6">
+                  <label class="form-label font-mono-telemetry text-secondary text-uppercase fw-semibold" style="font-size: 11px;">
+                    Full Name
+                  </label>
+                  <input type="text" id="bookingFullName" class="form-control form-control-clinical" value="Jane Doe" placeholder="Jane Doe" required>
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label font-mono-telemetry text-secondary text-uppercase fw-semibold" style="font-size: 11px;">
+                    Mobile Contact • SMS Telemetry
+                  </label>
+                  <input type="tel" id="bookingPhone" class="form-control form-control-clinical" placeholder="+91 98765 43210" required>
+                </div>
+              </div>
+
+              <!-- Row 4: Notes -->
+              <div class="mb-4">
+                <label class="form-label font-mono-telemetry text-secondary text-uppercase fw-semibold" style="font-size: 11px;">
+                  Clinical Intake Notes • Symptoms (Optional)
+                </label>
+                <textarea id="bookingNotes" class="form-control form-control-clinical" rows="3" placeholder="Specify any previous diagnostic records, current medications, or pre-existing cardiovascular conditions..."></textarea>
+              </div>
+
+              <!-- Submit -->
+              <button type="submit" class="btn btn-cyan w-100 py-3 d-flex align-items-center justify-content-center gap-2">
+                <span>Confirm Appointment Dispatch</span>
+                <i class="bi bi-send-fill"></i>
+              </button>
+            </form>
+          </div>
+        </div>
+      </section>
+
+      <section id="appointmentManagement" class="py-5 px-3 px-lg-5 border-top border-secondary-subtle">
+        <div class="container-fluid px-0 max-w-4xl mx-auto" style="max-width: 900px;">
+          <div class="clinical-card p-4 p-md-5">
+            <div class="d-flex align-items-center gap-3 mb-3">
+              <div class="d-flex align-items-center justify-content-center rounded-2 bg-info-subtle text-info" style="width: 42px; height: 42px;">
+                <i class="bi bi-calendar2-check fs-5"></i>
+              </div>
+              <div>
+                <div class="font-mono-telemetry text-info text-uppercase fw-semibold small">Appointment Management</div>
+                <h2 class="font-display fw-bold fs-4 text-white mb-0">Manage an existing appointment</h2>
+              </div>
+            </div>
+            <p class="text-secondary small">Enter the booking token from your appointment receipt to view, reschedule, or cancel your appointment.</p>
+            <div class="input-group">
+              <input type="text" id="appointmentTokenQuickLookup" class="form-control form-control-clinical" placeholder="MC-XXXXXXXX" autocomplete="off" aria-label="Appointment booking token">
+              <button type="button" class="btn btn-cyan" id="manageAppointmentQuickBtn">Find appointment</button>
+            </div>
+            <div id="quickAppointmentMessage" class="small mt-2 text-secondary" role="status"></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="adminDashboard" class="py-5 px-3 px-lg-5 border-top border-secondary-subtle d-none">
+        <div class="container-fluid px-0 max-w-7xl">
+          <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-end gap-3 mb-4">
+            <div>
+              <div class="font-mono-telemetry text-info text-uppercase fw-semibold small">Operations Console</div>
+              <h2 class="font-display fw-bold fs-2 text-white mb-1">Today’s Appointments</h2>
+              <p class="text-secondary small mb-0">Demo admin view for managing appointment status and exports.</p>
+            </div>
+            <button type="button" class="btn btn-cyan" id="exportAppointmentsBtn">
+              <i class="bi bi-download me-1"></i> Export CSV
+            </button>
+          </div>
+
+          <div class="clinical-card p-3 p-md-4">
+            <div class="row g-3 align-items-end mb-4">
+              <div class="col-md-4">
+                <label class="form-label font-mono-telemetry text-secondary text-uppercase small" for="adminDateFilter">Date</label>
+                <input type="date" id="adminDateFilter" class="form-control form-control-clinical">
+              </div>
+              <div class="col-md-4">
+                <label class="form-label font-mono-telemetry text-secondary text-uppercase small" for="adminDoctorFilter">Doctor</label>
+                <select id="adminDoctorFilter" class="form-select form-select-clinical">
+                  <option value="">All doctors</option>
+                </select>
+              </div>
+              <div class="col-md-4">
+                <label class="form-label font-mono-telemetry text-secondary text-uppercase small" for="adminStatusFilter">Status</label>
+                <select id="adminStatusFilter" class="form-select form-select-clinical">
+                  <option value="">All statuses</option>
+                  <option value="demo_confirmed">Confirmed</option>
+                  <option value="completed">Completed</option>
+                  <option value="cancelled">Cancelled</option>
+                </select>
+              </div>
+            </div>
+            <div id="adminAppointmentMessage" class="small text-secondary mb-3" aria-live="polite"></div>
+            <div class="table-responsive">
+              <table class="table table-dark align-middle mb-0">
+                <thead>
+                  <tr>
+                    <th>Time</th>
+                    <th>Patient</th>
+                    <th>Doctor</th>
+                    <th>Specialty</th>
+                    <th>Status</th>
+                    <th class="text-end">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="adminAppointmentRows"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Clinical Hours & Access (Tower 4 Map & Emergency Hotline) -->
+      <section id="access" class="py-5 px-3 px-lg-5 border-top border-secondary-subtle">
+        <div class="container-fluid px-0 max-w-7xl">
+          <div class="row g-5 align-items-stretch">
+            <!-- Left: Hours & STAT Hotline -->
+            <div class="col-lg-5 d-flex flex-column justify-content-between">
+              <div>
+                <div class="d-flex align-items-center gap-2 mb-2">
+                  <span class="rounded-circle bg-info d-inline-block" style="width: 8px; height: 8px;"></span>
+                  <span class="font-mono-telemetry text-info text-uppercase fw-semibold" style="font-size: 11px; letter-spacing: 0.08em;">
+                    Clinic Information • Demo
+                  </span>
+                </div>
+                <h2 class="font-display fw-bold fs-2 text-white mb-3">
+                  Clinical Hours & Access
+                </h2>
+                <p class="text-secondary small mb-4">
+                  The hours and service details below are examples for this demonstration. Confirm current availability directly with your clinic.
+                </p>
+              </div>
+
+              <!-- Hours Table -->
+              <div class="p-4 rounded-3 font-mono-telemetry small mb-4" style="background-color: var(--med-surface); border: 1px solid var(--med-border-subtle);">
+                <div class="d-flex justify-content-between py-2 border-bottom border-secondary-subtle">
+                  <span class="text-secondary">India Emergency Number</span>
+                  <span class="text-success fw-bold">112</span>
+                </div>
+                <div class="d-flex justify-content-between py-2 border-bottom border-secondary-subtle">
+                  <span class="text-secondary">General Outpatient</span>
+                  <span class="text-light">Mon - Fri: 07:00 - 20:00</span>
+                </div>
+                <div class="d-flex justify-content-between py-2 border-bottom border-secondary-subtle">
+                  <span class="text-secondary">Specialized Diagnostics</span>
+                  <span class="text-light">Mon - Sat: 08:00 - 18:30</span>
+                </div>
+                <div class="d-flex justify-content-between py-2">
+                  <span class="text-secondary">Pediatric Wing</span>
+                  <span class="text-light">Mon - Sun: 08:00 - 20:00</span>
+                </div>
+              </div>
+
+              <!-- STAT Emergency Response Banner -->
+              <div class="p-3 rounded-3 d-flex align-items-center justify-content-between gap-3" style="background-color: #240c12; border: 1px solid rgba(239, 68, 68, 0.4);">
+                <div class="d-flex align-items-center gap-3">
+                  <div class="d-flex align-items-center justify-content-center rounded bg-danger-subtle text-danger p-2" style="width: 44px; height: 44px;">
+                    <i class="bi bi-exclamation-triangle-fill fs-5"></i>
+                  </div>
+                  <div>
+                    <div class="font-mono-telemetry text-danger-emphasis text-uppercase" style="font-size: 10px;">
+                      Stat Emergency Response Hotline
+                    </div>
+                    <div class="font-display fw-bold text-white fs-5">
+                      India Emergency Number: 112
+                    </div>
+                  </div>
+                </div>
+                <button class="btn btn-light text-danger-emphasis fw-bold btn-sm text-uppercase px-3 py-2" data-bs-toggle="modal" data-bs-target="#emergencyModal">
+                  Dial STAT
+                </button>
+              </div>
+            </div>
+
+            <!-- Right: Illustrative Bengaluru map -->
+            <div class="col-lg-7 d-flex flex-column">
+              <div class="clinical-card overflow-hidden flex-grow-1 d-flex flex-column justify-content-between">
+                <!-- Map Header -->
+                <div class="p-3 d-flex align-items-center justify-content-between border-bottom border-secondary-subtle" style="background-color: var(--med-bg-secondary);">
+                  <div class="d-flex align-items-center gap-2 font-display fw-bold text-white fs-6">
+                    <i class="bi bi-geo-alt-fill text-info"></i>
+                    <span>MediCare AI Clinic • Bengaluru</span>
+                  </div>
+                  <span class="font-mono-telemetry text-secondary small">BENGALURU, KARNATAKA</span>
+                </div>
+
+                <!-- Illustrative Bengaluru map with travel note -->
+                <div class="position-relative flex-grow-1 clinic-map">
+                  <iframe
+                    class="clinic-map-frame"
+                    src="https://www.openstreetmap.org/export/embed.html?bbox=77.5846%2C12.9666%2C77.6046%2C12.9766&amp;layer=mapnik&amp;marker=12.9716%2C77.5946"
+                    title="Illustrative map centered on Bengaluru, Karnataka"
+                    loading="lazy"
+                    referrerpolicy="no-referrer">
+                  </iframe>
+                  <!-- Parking Badge -->
+                  <div class="position-absolute bottom-0 start-0 m-3 p-2 px-3 rounded-3 d-flex align-items-center gap-2 small" style="background-color: rgba(10, 18, 32, 0.9); border: 1px solid var(--med-border); backdrop-filter: blur(8px);">
+                    <span class="badge bg-info font-mono-telemetry">i</span>
+                    <span class="text-light" style="font-size: 11px;">Illustrative city-centre location; clinic address not provided</span>
+                  </div>
+                </div>
+
+                <!-- Map Footer Coordinates -->
+                <div class="p-3 border-top border-secondary-subtle row g-3 font-mono-telemetry small m-0" style="background-color: var(--med-bg-secondary);">
+                  <div class="col-sm-6">
+                    <div class="text-secondary text-uppercase" style="font-size: 10px;">Physical Address</div>
+                    <div class="text-light fw-medium">Bengaluru, Karnataka, India</div>
+                    <div class="text-secondary" style="font-size: 11px;">Illustrative map location • Not a clinic address</div>
+                  </div>
+                  <div class="col-sm-6 d-flex align-items-center justify-content-between">
+                    <div>
+                      <div class="text-secondary text-uppercase" style="font-size: 10px;">Rapid Transport</div>
+                      <div class="text-info fw-medium">Bengaluru Metro • BMTC buses</div>
+                    </div>
+                    <button id="copyAddressBtn" class="btn btn-outline-clinical p-2" title="Copy Address">
+                      <i class="bi bi-compass"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="py-5 px-3 px-lg-5 border-top border-secondary-subtle" style="background-color: #030712;">
+      <div class="container-fluid px-0 max-w-7xl">
+        <div class="row g-5 pb-5 border-bottom border-secondary-subtle">
+          <!-- Col 1 -->
+          <div class="col-lg-3 col-md-6">
+            <div class="d-flex align-items-center gap-2 mb-3">
+              <div class="d-flex align-items-center justify-content-center rounded bg-info text-dark" style="width: 32px; height: 32px;">
+                <i class="bi bi-activity fw-bold"></i>
+              </div>
+              <div class="font-display fw-bold fs-5 text-white">
+                MediCare <span class="text-info">AI</span>
+              </div>
+            </div>
+            <p class="text-secondary small mb-3">
+              Demo clinic information, local appointment booking, and rule-based symptom guidance. Not for diagnosis or emergency care.
+            </p>
+            <div class="d-flex align-items-center gap-2">
+              <span class="rounded-circle bg-success d-inline-block" style="width: 8px; height: 8px; box-shadow: 0 0 8px #10b981;"></span>
+              <span class="font-mono-telemetry text-info small text-uppercase fw-semibold">Telemetry Grid Online</span>
+            </div>
+          </div>
+
+          <!-- Col 2: Operational Hours -->
+          <div class="col-lg-3 col-md-6 font-mono-telemetry small">
+            <h4 class="font-display fw-bold text-white fs-6 mb-3">Sample Clinic Hours (IST)</h4>
+            <div class="d-flex justify-content-between py-1">
+              <span class="text-secondary">Emergency services:</span>
+              <span class="text-info fw-bold">Call 112</span>
+            </div>
+            <div class="d-flex justify-content-between py-1">
+              <span class="text-secondary">Virtual Consults:</span>
+              <span class="text-light">06:00 - 23:00</span>
+            </div>
+            <div class="d-flex justify-content-between py-1">
+              <span class="text-secondary">Outpatient Suite:</span>
+              <span class="text-light">08:00 - 18:00</span>
+            </div>
+            <div class="d-flex justify-content-between py-1">
+              <span class="text-secondary">Diagnostics Lab:</span>
+              <span class="text-light">07:00 - 20:00</span>
+            </div>
+          </div>
+
+          <!-- Col 3: Coordinates -->
+          <div class="col-lg-3 col-md-6 font-mono-telemetry small">
+            <h4 class="font-display fw-bold text-white fs-6 mb-3">Clinic Coordinates</h4>
+            <div class="text-light fw-semibold">MediCare AI Clinic</div>
+            <div class="text-secondary">Bengaluru, Karnataka, India</div>
+            <div class="text-secondary">Map location is illustrative; address not provided</div>
+            <div class="text-info fw-bold mt-2">EMERGENCY: 112</div>
+            <div class="text-secondary" style="font-size: 11px;">DEMO CLINIC • NOT A REAL CONTACT</div>
+          </div>
+
+          <!-- Col 4: Accreditations -->
+          <div class="col-lg-3 col-md-6 font-mono-telemetry small">
+            <h4 class="font-display fw-bold text-white fs-6 mb-3">Privacy & Information</h4>
+            <div class="d-flex gap-2 mb-2">
+              <i class="bi bi-shield-check text-info fs-5"></i>
+              <div>
+                <div class="text-light fw-bold">Health Data Privacy</div>
+                <div class="text-secondary" style="font-size: 11px;">Privacy-conscious care workflows</div>
+              </div>
+            </div>
+            <div class="d-flex gap-2 mb-2">
+              <i class="bi bi-patch-check text-info fs-5"></i>
+              <div>
+                <div class="text-light fw-bold">Indian Healthcare</div>
+                <div class="text-secondary" style="font-size: 11px;">Local care and access information</div>
+              </div>
+            </div>
+            <div class="d-flex gap-2">
+              <i class="bi bi-cpu text-info fs-5"></i>
+              <div>
+                <div class="text-light fw-bold">Automated Guidance</div>
+                <div class="text-secondary" style="font-size: 11px;">Not a diagnosis or medical device claim</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bottom Bar -->
+        <div class="pt-4 d-flex flex-column flex-sm-row justify-content-between align-items-center gap-3 font-mono-telemetry text-secondary small">
+          <div>© 2026 MediCare AI Clinic • Bengaluru, India</div>
+          <div class="d-flex gap-4">
+            <a href="#" class="text-secondary text-decoration-none hover-info policy-trigger" data-policy="telemetry">TELEMETRY POLICY</a>
+            <a href="#" class="text-secondary text-decoration-none hover-info policy-trigger" data-policy="governance">CLINICAL GOVERNANCE</a>
+            <a href="#" class="text-secondary text-decoration-none hover-info policy-trigger" data-policy="security">SECURITY AUDITS</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Booking Confirmation Pass Modal -->
+    <div class="modal fade" id="bookingReceiptModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content modal-content-clinical p-4">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <div class="d-flex align-items-center gap-2">
+              <div class="rounded-circle bg-success-subtle text-success d-flex align-items-center justify-content-center p-2" style="width: 40px; height: 40px;">
+                <i class="bi bi-check2-circle fs-4"></i>
+              </div>
+              <div>
+                <div class="font-mono-telemetry text-success text-uppercase fw-bold" style="font-size: 10px;">Demo Booking Saved Locally</div>
+                <h4 class="font-display fw-bold text-white fs-5 m-0">Appointment Receipt</h4>
+              </div>
+            </div>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+
+          <div class="p-3 rounded-3 font-mono-telemetry small mb-3" style="background-color: var(--med-bg-secondary); border: 1px solid var(--med-border-subtle);">
+            <label for="appointmentTokenLookup" class="text-info text-uppercase fw-bold mb-2">Manage an appointment</label>
+            <div class="input-group mb-2">
+              <input type="text" id="appointmentTokenLookup" class="form-control form-control-clinical" placeholder="MC-XXXXXXXX" autocomplete="off">
+              <button type="button" class="btn btn-cyan" id="lookupAppointmentBtn">Find</button>
+            </div>
+          <div id="appointmentPortalMessage" class="small text-secondary" role="status">Your booking token will appear here after confirmation.</div>
+          </div>
+
+          <div id="appointmentPortalDetails" class="d-none p-3 rounded-3 font-mono-telemetry small mb-4" style="background-color: var(--med-bg-secondary); border: 1px solid var(--med-border-subtle);">
+            <div class="d-flex justify-content-between py-1 border-bottom border-secondary-subtle">
+              <span class="text-secondary">Status:</span>
+              <span id="portalStatus" class="text-success fw-bold"></span>
+            </div>
+            <div class="d-flex justify-content-between py-1 border-bottom border-secondary-subtle">
+              <span class="text-secondary">Patient:</span>
+              <span id="portalPatient" class="text-light"></span>
+            </div>
+            <div class="d-flex justify-content-between py-1 border-bottom border-secondary-subtle">
+              <span class="text-secondary">Clinician:</span>
+              <span id="portalDoctor" class="text-light"></span>
+            </div>
+            <div class="d-flex justify-content-between py-1">
+              <span class="text-secondary">Appointment:</span>
+              <span id="portalDateSlot" class="text-info"></span>
+            </div>
+            <div class="d-flex gap-2 mt-3">
+              <button type="button" class="btn btn-outline-clinical btn-sm flex-grow-1" id="rescheduleAppointmentBtn">Reschedule</button>
+              <button type="button" class="btn btn-outline-danger btn-sm flex-grow-1" id="cancelAppointmentBtn">Cancel</button>
+            </div>
+            <div id="rescheduleControls" class="d-none mt-3">
+              <label for="portalDate" class="text-secondary mb-1">New date</label>
+              <input type="date" id="portalDate" class="form-control form-control-clinical mb-2">
+              <label for="portalTime" class="text-secondary mb-1">New time</label>
+              <select id="portalTime" class="form-select form-select-clinical mb-2"></select>
+              <button type="button" class="btn btn-cyan btn-sm w-100" id="saveRescheduleBtn">Save new time</button>
+            </div>
+          </div>
+
+          <div class="p-3 rounded-3 font-mono-telemetry small mb-4" style="background-color: var(--med-bg-secondary); border: 1px solid var(--med-border-subtle);">
+            <div class="d-flex justify-content-between py-1 border-bottom border-secondary-subtle">
+              <span class="text-secondary">Dispatch Token:</span>
+              <span class="text-info fw-bold" id="receiptTokenId">DISPATCH-MC-9428-A</span>
+            </div>
+            <div class="d-flex justify-content-between py-1 border-bottom border-secondary-subtle">
+              <span class="text-secondary">Assigned Bay:</span>
+              <span class="text-light fw-bold" id="receiptBay">Not assigned</span>
+            </div>
+            <div class="d-flex justify-content-between py-1 border-bottom border-secondary-subtle">
+              <span class="text-secondary">Attending Clinician:</span>
+              <span class="text-light" id="receiptDoctor">Dr. Sarah Chen</span>
+            </div>
+            <div class="d-flex justify-content-between py-1 border-bottom border-secondary-subtle">
+              <span class="text-secondary">Specialty Module:</span>
+              <span class="text-info" id="receiptSpecialty">Cardiology Screening</span>
+            </div>
+            <div class="d-flex justify-content-between py-1 border-bottom border-secondary-subtle">
+              <span class="text-secondary">Date & Slot:</span>
+              <span class="text-success fw-bold" id="receiptDateSlot">Appointment date • 14:30 IST</span>
+            </div>
+            <div class="d-flex justify-content-between py-1">
+              <span class="text-secondary">Patient Name:</span>
+              <span class="text-light" id="receiptPatient">Jane Doe</span>
+            </div>
+          </div>
+
+          <div class="d-flex gap-2">
+            <button type="button" class="btn btn-outline-clinical flex-grow-1" onclick="window.print()">
+              <i class="bi bi-printer me-1"></i> Print Pass
+            </button>
+            <button type="button" id="downloadIcsBtn" class="btn btn-cyan flex-grow-1">
+              <i class="bi bi-calendar-event me-1"></i> Add to Calendar
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="adminLoginModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content modal-content-clinical p-4">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h4 class="font-display fw-bold text-white fs-5 m-0">Admin Login</h4>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <p class="text-secondary small">Demo credentials: <strong>admin@example.com</strong> /
+            <strong>DemoAdminPassword2026!</strong>. Production deployments should configure their own credentials.</p>
+          <form id="adminLoginForm">
+            <label class="form-label" for="adminLoginEmail">Email</label>
+            <input id="adminLoginEmail" class="form-control form-control-clinical mb-3" type="email" autocomplete="username" required>
+            <label class="form-label" for="adminLoginPassword">Password</label>
+            <input id="adminLoginPassword" class="form-control form-control-clinical mb-3" type="password" autocomplete="current-password" required>
+            <button class="btn btn-cyan w-100" type="submit">Sign in</button>
+            <div id="adminLoginMessage" class="small mt-3" aria-live="polite"></div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Patient Profile Node Modal -->
+    <div class="modal fade" id="profileModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content modal-content-clinical p-4">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <div class="d-flex align-items-center gap-2">
+              <div class="rounded-circle bg-info-subtle text-info d-flex align-items-center justify-content-center p-2" style="width: 40px; height: 40px;">
+                <i class="bi bi-person fs-5"></i>
+              </div>
+              <div>
+                <h4 class="font-display fw-bold text-white fs-5 m-0">Patient Telemetry Node</h4>
+                <div class="font-mono-telemetry text-info small">DEMO PROFILE • NO ACCOUNT</div>
+              </div>
+            </div>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+
+          <div class="p-3 rounded-3 font-mono-telemetry small mb-4" style="background-color: var(--med-bg-secondary); border: 1px solid var(--med-border-subtle);">
+            <div class="d-flex justify-content-between py-1 border-bottom border-secondary-subtle">
+              <span class="text-secondary">Account verification:</span>
+              <span class="text-secondary">Demo only • Not verified</span>
+            </div>
+            <div class="d-flex justify-content-between py-1 border-bottom border-secondary-subtle">
+              <span class="text-secondary">Primary Health ID:</span>
+              <span class="text-light">Not linked</span>
+            </div>
+            <div class="d-flex justify-content-between py-1 border-bottom border-secondary-subtle">
+              <span class="text-secondary">Assigned Bay:</span>
+              <span class="text-secondary">Not assigned</span>
+            </div>
+            <div class="d-flex justify-content-between py-1">
+              <span class="text-secondary">Security Protocol:</span>
+              <span class="text-secondary">Demo only • No account linked</span>
+            </div>
+          </div>
+          <button type="button" class="btn btn-cyan w-100" data-bs-dismiss="modal" onclick="document.getElementById('booking').scrollIntoView({behavior: 'smooth'})">
+            Schedule Immediate Follow-up
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- STAT Emergency Hotline Modal -->
+    <div class="modal fade" id="emergencyModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content modal-content-clinical p-4" style="border-color: rgba(239, 68, 68, 0.6); background-color: #17090d;">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <div class="d-flex align-items-center gap-2">
+              <div class="rounded-circle bg-danger-subtle text-danger d-flex align-items-center justify-content-center p-2" style="width: 40px; height: 40px;">
+                <i class="bi bi-shield-exclamation fs-4"></i>
+              </div>
+              <div>
+                <h4 class="font-display fw-bold text-white fs-5 m-0">Emergency Trauma Hotline</h4>
+                <div class="font-mono-telemetry text-danger small">INDIA EMERGENCY NUMBER</div>
+              </div>
+            </div>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+
+          <p class="text-secondary small mb-4">
+            For emergencies in India, call 112 or go to the nearest hospital emergency department. This demo clinic does not provide emergency dispatch.
+          </p>
+
+          <div class="p-3 rounded-3 text-center mb-4" style="background-color: rgba(0,0,0,0.5); border: 1px solid rgba(239, 68, 68, 0.4);">
+            <div class="font-mono-telemetry text-danger text-uppercase small">Direct Emergency Line</div>
+            <div class="font-display fw-bold fs-3 text-white">112</div>
+            <div class="font-mono-telemetry text-secondary small mt-1">India's pan-India emergency response number</div>
+          </div>
+
+          <div class="d-flex gap-2">
+            <a href="tel:112" class="btn btn-danger fw-bold flex-grow-1 text-uppercase py-2">
+              <i class="bi bi-telephone-fill me-1"></i> Call Hotline
+            </a>
+            <button type="button" class="btn btn-outline-clinical" data-bs-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Policy Modal -->
+    <div class="modal fade" id="policyModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content modal-content-clinical p-4">
+          <div class="d-flex justify-content-between align-items-center mb-3">
+            <h4 class="font-display fw-bold text-white fs-5 m-0" id="policyModalTitle">Policy Information</h4>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <p class="text-secondary small font-mono-telemetry lh-base mb-4" id="policyModalText">
+            Policy details will appear here.
+          </p>
+          <button type="button" class="btn btn-outline-clinical w-100" data-bs-dismiss="modal">
+            Acknowledge & Close
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <button type="button" id="clinicChatBackdrop" class="clinic-chat-backdrop d-none" aria-label="Cancel and close chat"></button>
+    <div class="clinic-chat-widget">
+      <section id="clinicChatPanel" class="clinic-chat-panel d-none" role="dialog" aria-modal="true" aria-labelledby="clinicChatTitle" aria-hidden="true">
+        <div class="clinic-chat-header">
+          <div class="clinic-chat-brand">
+            <div class="clinic-chat-avatar" aria-hidden="true"><i class="bi bi-heart-pulse-fill"></i></div>
+            <div>
+              <div class="clinic-chat-eyebrow">MEDICARE AI CLINIC</div>
+              <h2 id="clinicChatTitle" class="clinic-chat-title">How can we help?</h2>
+              <div class="clinic-chat-presence">
+                <span class="clinic-chat-presence-dot"></span>
+                <span>Clinic information & booking</span>
+              </div>
+            </div>
+          </div>
+          <button type="button" id="clinicChatClose" class="clinic-chat-cancel" aria-label="Cancel and close chat">
+            <span>Cancel</span>
+            <i class="bi bi-x-lg" aria-hidden="true"></i>
+          </button>
+        </div>
+
+        <div class="clinic-chat-toolbar">
+          <span>QUICK QUESTIONS</span>
+          <span class="clinic-chat-provider"><span class="clinic-chat-provider-dot"></span><span id="groqChatStatus">CONNECTING</span></span>
+        </div>
+
+        <div class="clinic-chat-prompts" aria-label="Suggested questions">
+          <button class="clinic-chat-prompt chat-prompt-btn" data-query="What services does the clinic offer?"><i class="bi bi-grid-1x2"></i> Services</button>
+          <button class="clinic-chat-prompt chat-prompt-btn" data-query="Which doctors are available and what do they specialize in?"><i class="bi bi-person-badge"></i> Our doctors</button>
+          <button class="clinic-chat-prompt chat-prompt-btn" data-query="Help me book an appointment."><i class="bi bi-calendar2-check"></i> Book a visit</button>
+          <button class="clinic-chat-prompt chat-prompt-btn" data-query="What are the clinic's opening hours?"><i class="bi bi-clock"></i> Hours</button>
+        </div>
+
+        <div class="clinic-chat-messages" id="clinicChatHistory" aria-live="polite" aria-relevant="additions">
+          <div class="clinic-chat-row clinic-chat-row-assistant">
+            <div class="clinic-chat-message-avatar" aria-hidden="true"><i class="bi bi-heart-pulse-fill"></i></div>
+            <div class="clinic-chat-message-content">
+              <div class="clinic-chat-message-label">MediCare Assistant</div>
+              <div class="clinic-chat-bubble clinic-chat-bubble-assistant">
+                Hello! I can help with clinic services, doctors, timings, and finding an appointment. What would you like to know?
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="clinic-chat-disclaimer"><i class="bi bi-shield-check"></i><span>Replies are generated with Groq AI. Avoid sharing personal or health information.</span></div>
+        <form id="clinicChatForm" class="clinic-chat-form">
+          <input type="text" id="clinicChatInput" class="form-control form-control-clinical" placeholder="Ask a question..." maxlength="2000" autocomplete="off" aria-label="Message to clinic assistant" required>
+          <button type="submit" id="clinicChatSendBtn" class="clinic-chat-send" aria-label="Send message">
+            <i class="bi bi-send-fill"></i>
+          </button>
+        </form>
+        <div class="clinic-chat-footer">Powered by AI · For emergencies in India, call 112</div>
+      </section>
+
+      <button type="button" id="clinicChatToggle" class="clinic-chat-toggle" aria-label="Open clinic chatbot" aria-expanded="false" aria-controls="clinicChatPanel">
+        <span class="clinic-chat-toggle-icon"><i class="bi bi-chat-dots-fill clinic-chat-open-icon" aria-hidden="true"></i>
+        <i class="bi bi-x-lg clinic-chat-close-icon" aria-hidden="true"></i>
+        </span>
+        <span class="clinic-chat-toggle-label" id="clinicChatToggleLabel">Chat with us</span>
+      </button>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="/static/js/main.js?v=20261031-2" defer></script>
+  </body>
+</html>
