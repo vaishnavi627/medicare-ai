@@ -12,23 +12,30 @@ python -m pip install -r requirements.txt
 python -m uvicorn app.main:app --reload
 ```
 
-## Deploy on Render
+## How the application works
 
-1. Push this project to a GitHub or GitLab repository.
-2. In Render, choose **New → Blueprint**, select the repository, and apply the
-   included `render.yaml`.
-3. Enter values for `GROQ_API_KEY`, `MEDICARE_ADMIN_EMAIL`, and
-   `MEDICARE_ADMIN_PASSWORD` when Render prompts for them. The Blueprint
-   generates `MEDICARE_ADMIN_SECRET` automatically.
-4. Deploy and open the Render URL. Verify the deployment at
-   `https://your-service.onrender.com/health`.
+1. Visitors open the clinic website and can browse services, doctors,
+   illustrative clinic hours, and appointment availability.
+2. The guided booking flow collects a service, doctor preference, date, time
+   period, name, and phone number. It checks live availability before showing
+   a slot and submits the appointment only after the visitor confirms.
+3. The AI chat uses Groq for clinic information and booking guidance. It can
+   call server-side tools to list services, list doctors, and check
+   availability. Chat does not create appointments; visitors complete
+   bookings through the guided flow.
+4. The triage endpoint provides conservative clinic-routing suggestions only.
+   It does not diagnose conditions or provide treatment advice.
+5. Appointment records are stored in SQLite. The admin dashboard allows an
+   authorized administrator to view, filter, export, complete, or cancel
+   appointments.
+6. `/health` checks that the application and database are available. The
+   frontend is served by FastAPI, while static files are loaded from `static/`
+   and page templates from `templates/`.
 
-The service must bind to Render's `$PORT`; the included start command handles
-this. The free plan has an ephemeral filesystem, so SQLite appointments can be
-lost when the service restarts or redeploys. For a persistent deployment, use a
-paid Render disk mounted at `/opt/render/project/src/data` and set
-`MEDICARE_DATABASE_PATH=/opt/render/project/src/data/medicare.db`, or migrate
-the application to a managed PostgreSQL database before storing real data.
+The included `render.yaml` can be used to deploy the application on Render.
+Render deployments must provide `GROQ_API_KEY`, `MEDICARE_ADMIN_EMAIL`, and
+`MEDICARE_ADMIN_PASSWORD`. The free Render plan has an ephemeral filesystem,
+so SQLite appointments can be lost when the service restarts or redeploys.
 
 Set a Groq API key in PowerShell before starting the server to enable the
 chatbot:
